@@ -1,0 +1,3 @@
+rootProject.name = "Firestore Ext"
+include ':app'
+include ':lib'
