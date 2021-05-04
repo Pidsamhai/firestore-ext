@@ -35,7 +35,6 @@ inline fun <reified T> Query.asLiveData(): LiveData<List<T>> {
 }
 
 inline fun <reified T> Query.asFirstLiveData(): LiveData<T> {
-    this.limit(1)
     return QueryFirstLiveData.create(this)
 }
 

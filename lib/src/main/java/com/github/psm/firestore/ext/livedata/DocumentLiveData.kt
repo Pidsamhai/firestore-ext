@@ -11,9 +11,9 @@ class DocumentLiveData<T>(private val docRef: DocumentReference, private val cla
 
     private val eventListener = EventListener<DocumentSnapshot> { snapshot, error ->
         if (error != null) return@EventListener
-        if (snapshot != null && snapshot.exists()) {
-            value = snapshot.toObject(clazz)
-        }
+        value = if (snapshot != null && snapshot.exists()) {
+             snapshot.toObject(clazz)
+        } else null
     }
 
     override fun onActive() {

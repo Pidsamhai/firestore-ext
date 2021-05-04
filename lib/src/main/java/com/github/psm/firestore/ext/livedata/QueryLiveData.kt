@@ -6,18 +6,18 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 
-class QueryLiveData<T>(private val query: Query, private val clazz: Class<T>, private val first: Boolean = false) : LiveData<List<T>>() {
+class QueryLiveData<T>(private val query: Query, private val clazz: Class<T>) : LiveData<List<T>>() {
     private var listenerRegistration: ListenerRegistration? = null
 
     private val eventListener = EventListener<QuerySnapshot> { snapshot, error ->
         if (error != null) return@EventListener
-        if (snapshot != null && !snapshot.isEmpty) {
+        value = if (snapshot != null && !snapshot.isEmpty) {
             val items = mutableListOf<T>()
             for (doc in snapshot.documents) {
                 items.add(doc.toObject(clazz)!!)
             }
-            value = items
-        }
+            items
+        } else listOf()
     }
 
     override fun onActive() {

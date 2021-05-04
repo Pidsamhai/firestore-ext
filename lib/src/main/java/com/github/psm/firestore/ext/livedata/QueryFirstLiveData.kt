@@ -11,9 +11,10 @@ class QueryFirstLiveData<T>(private val query: Query, private val clazz: Class<T
 
     private val eventListener = EventListener<QuerySnapshot> { snapshot, error ->
         if (error != null) throw error
-        if (snapshot != null && !snapshot.isEmpty) {
-            value = snapshot.documents[0].toObject(clazz)
-        }
+        value = if (snapshot != null && !snapshot.isEmpty) {
+            snapshot.documents[0].toObject(clazz)
+        } else null
+
     }
 
     init {
